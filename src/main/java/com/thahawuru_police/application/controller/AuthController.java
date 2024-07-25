@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponseDTO>> loginUser(@Valid @RequestBody LoginRequestDTO user){

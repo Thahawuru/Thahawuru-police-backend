@@ -25,7 +25,7 @@ public class AuthService {
 
 
     public LoginResponseDTO login(LoginRequestDTO user){
-        User current = userRepository.findUserByEmail(user.getEmail()).orElseThrow(()-> new UserNotFoundException("User Not Found!"));
+        User current = userRepository.findUserByEmail(user.getEmail().toLowerCase()).orElseThrow(()-> new UserNotFoundException("User Not Found!"));
 
         if(encryptionService.verifyPassword(user.getPassword(),current.getPassword())){
             String token=  jwtService.generateJWT(current);
@@ -37,11 +37,11 @@ public class AuthService {
     }
 
     public UserResponseDTO registerUser(User user){
-        if(userRepository.findUserByEmail(user.getEmail()).isPresent()){
+        if(userRepository.findUserByEmail(user.getEmail().toLowerCase()).isPresent()){
             throw new IllegalStateException("email already exists!");
         }else{
             User newuser = new User();
-            newuser.setEmail(user.getEmail());
+            newuser.setEmail(user.getEmail().toLowerCase());
             newuser.setPassword(encryptionService.encryptPassword(user.getPassword()));
             newuser.setNic(user.getNic());
             User newUser=userRepository.save(newuser);
