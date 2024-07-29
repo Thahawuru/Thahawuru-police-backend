@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QrResponseDTO {
-    BlockchainResponseDTO details;
+public class BlockchainResponseDTO {
+             private LicenseResponseDTO licenceDetails;
+             private NICResponseDTO nicDetails;
+
 }

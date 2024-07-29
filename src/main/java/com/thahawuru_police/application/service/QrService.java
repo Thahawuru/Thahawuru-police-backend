@@ -8,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -32,12 +34,22 @@ public class QrService {
                 entity,
                 QrResponseDTO.class
         );
+            System.out.println("RESPONSE"+response);
             return response.getBody();
-        }catch(Exception ex){
-          throw new UserNotFoundException("User data not found!");
+        } catch (HttpClientErrorException e) {
+            // Handle client-side HTTP errors (4xx)
+
+            if (e.getStatusCode().value() == 404) {
+                throw new UserNotFoundException("User not found for this QR: " + nicId);
+            } else {
+                throw new RuntimeException("Request timeout!: " + e.getStatusCode().value());
+            }
+        } catch (HttpServerErrorException e) {
+            throw new RuntimeException("Server error: " + e.getStatusCode().value());
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred");
         }
 
-//        System.out.println("this is the response"+response);
 
     }
 }
