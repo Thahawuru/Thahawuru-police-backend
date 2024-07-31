@@ -1,11 +1,10 @@
 package com.thahawuru_police.application.controller;
 
-import com.thahawuru_police.application.dto.response.UserResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import com.thahawuru_police.application.dto.response.ApiResponse;
 import com.thahawuru_police.application.dto.response.PoliceResponseDTO;
-import com.thahawuru_police.application.entity.Police;
-import com.thahawuru_police.application.service.PoliceService;
+import com.thahawuru_police.application.entity.PoliceOfficer;
+import com.thahawuru_police.application.service.PoliceOfficerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +19,16 @@ import java.util.UUID;
 public class PoliceController {
 
     @Autowired
-    private PoliceService policeService;
+    private PoliceOfficerService policeService;
 
-    @PostMapping("/createPolice")
-    public ResponseEntity<ApiResponse<PoliceResponseDTO>> createPolice(@RequestBody Police police){
-
-        log.info("Received request to create police: {}", police);
-
-        ApiResponse<PoliceResponseDTO> response  = new ApiResponse<>(HttpStatus.CREATED.value(),policeService.createPolice(police),"created");
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
-    }
+//    @PostMapping("/createPolice")
+//    public ResponseEntity<ApiResponse<PoliceResponseDTO>> createPolice(@RequestBody Police police){
+//
+//        log.info("Received request to create police: {}", police);
+//
+//        ApiResponse<PoliceResponseDTO> response  = new ApiResponse<>(HttpStatus.CREATED.value(),policeService.createPolice(police),"created");
+//        return new ResponseEntity<>(response,HttpStatus.CREATED);
+//    }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PoliceResponseDTO>>> getOfficers(){
@@ -46,7 +45,7 @@ public class PoliceController {
     }
 
     @PutMapping("/edit/{userid}")
-    public ResponseEntity<ApiResponse<PoliceResponseDTO>> updateOfficer(@RequestBody Police police, @PathVariable(name = "userid") String id){
+    public ResponseEntity<ApiResponse<PoliceResponseDTO>> updateOfficer(@RequestBody PoliceOfficer police, @PathVariable(name = "userid") String id){
         police.setPoliceId(id);
         PoliceResponseDTO officer = policeService.updateOfficer(police);
         ApiResponse<PoliceResponseDTO> response = new ApiResponse<>(HttpStatus.OK.value(),officer,"success");

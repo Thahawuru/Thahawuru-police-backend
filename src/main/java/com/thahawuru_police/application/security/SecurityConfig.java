@@ -26,7 +26,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/auth/login" ,"/api/v1/auth/register").permitAll()
+                        .requestMatchers("/api/v1/auth/login" ,"/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**" ).hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(withDefaults());

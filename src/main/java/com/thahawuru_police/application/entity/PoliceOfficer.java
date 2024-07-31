@@ -1,7 +1,6 @@
 package com.thahawuru_police.application.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,19 +10,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
-@Table(name = "police")
+@Table(name = "police_officers")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Police {
+public class PoliceOfficer {
 
 
-//    private String name;
-//    private String dob;
-//    private String gender;
-//    private String homeAddress;
-//    private Integer phoneNumber;
-//    above details will gather from blockchain
+
 @GeneratedValue(generator = "UUID")
 @GenericGenerator(
         name = "UUID",
@@ -40,14 +34,21 @@ public class Police {
 
     @NotNull(message = "Police Badge is required")
     @NotBlank(message = "Police Badge Cannot be blank!")
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String policeBadgeNumber;
+
+
     private String rank;
     private String position;
+
+    @Column(nullable = false)
     private String department;
     private String dateOfJoining;
     private String status;  //Active, On Leave, Retired
     private String photo;
-    private String password;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

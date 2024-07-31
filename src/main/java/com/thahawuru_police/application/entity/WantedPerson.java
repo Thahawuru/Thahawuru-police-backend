@@ -20,8 +20,6 @@ public class WantedPerson {
     @Id
     @Column(nullable = false,updatable = false)
     private String id;
-
-
     private String name;
     private String dob;
     private String gender;

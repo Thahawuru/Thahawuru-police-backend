@@ -32,15 +32,21 @@ public class AuthController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/admin/login")
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> loginAdmin(@Valid @RequestBody LoginRequestDTO user){
+        ApiResponse<LoginResponseDTO> response  = new ApiResponse<>(HttpStatus.OK.value(),authService.loginAdmin(user),"success");
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @PostMapping("/admin/register")
     public ResponseEntity<ApiResponse<UserResponseDTO>> registerUser(@Valid @RequestBody User user){
-        ApiResponse<UserResponseDTO> response  = new ApiResponse<>(HttpStatus.CREATED.value(),authService.registerUser(user),"created");
+        ApiResponse<UserResponseDTO> response  = new ApiResponse<>(HttpStatus.CREATED.value(),authService.registerAdmin(user),"created");
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponseDTO>> getme(@AuthenticationPrincipal User user){
-        ApiResponse<UserResponseDTO> response =new ApiResponse<>(HttpStatus.OK.value(),new UserResponseDTO(user.getId(), user.getEmail(), user.getNic()),"success");
+        ApiResponse<UserResponseDTO> response =new ApiResponse<>(HttpStatus.OK.value(),new UserResponseDTO(user.getId(), user.getEmail(), user.getRole()),"success");
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 

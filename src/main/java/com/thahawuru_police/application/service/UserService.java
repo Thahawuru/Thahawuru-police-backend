@@ -1,6 +1,7 @@
 package com.thahawuru_police.application.service;
 
 import com.thahawuru_police.application.dto.response.UserResponseDTO;
+import com.thahawuru_police.application.entity.Roles;
 import com.thahawuru_police.application.exception.UserNotFoundException;
 import com.thahawuru_police.application.entity.User;
 import com.thahawuru_police.application.repository.UserRepository;
@@ -25,14 +26,14 @@ public class UserService {
 
     public List<UserResponseDTO> allUsers(){
         return userRepository.findAll().stream()
-                .map(user->new UserResponseDTO(user.getId(),user.getEmail(),user.getNic()))
+                .map(user->new UserResponseDTO(user.getId(),user.getEmail(),user.getRole()))
                 .collect(Collectors.toList());
     }
 
     public UserResponseDTO getUser(UUID userid){
         System.out.println("test");
         User user =  userRepository.findById(userid).orElseThrow(()-> new UserNotFoundException("User Not Found!"));
-        return new UserResponseDTO(user.getId(),user.getEmail(),user.getNic());
+        return new UserResponseDTO(user.getId(),user.getEmail(),user.getRole());
     }
 
     public UserResponseDTO createUser( User user){
@@ -42,10 +43,10 @@ public class UserService {
             User newuser = new User();
             newuser.setEmail(user.getEmail());
             newuser.setPassword(encryptionService.encryptPassword(user.getPassword()));
-            newuser.setNic(user.getNic());
+            newuser.setRole(Roles.POLICEOFFICER);
             User newUser=userRepository.save(newuser);
 
-            return new UserResponseDTO(newUser.getId(),newUser.getEmail(),newUser.getNic());
+            return new UserResponseDTO(newUser.getId(),newUser.getEmail(),newUser.getRole());
         }
     }
 
