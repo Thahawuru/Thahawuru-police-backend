@@ -37,7 +37,7 @@ public class AdminService {
             User newuser = new User();
             newuser.setRole(Roles.POLICEOFFICER);
             newuser.setEmail(police.getEmail().toLowerCase());
-            newuser.setPassword(police.getPassword());
+            newuser.setPassword(encryptionService.encryptPassword(police.getPassword()));
             User saveduser = userRepository.save(newuser);
 
             PoliceOfficer policeOfficer = new PoliceOfficer();
