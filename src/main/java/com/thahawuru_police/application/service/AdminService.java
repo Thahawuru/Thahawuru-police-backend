@@ -54,7 +54,7 @@ public class AdminService {
 
             PoliceOfficer newofficer=policeRepository.save(policeOfficer);
 
-            return new PoliceResponseDTO(newofficer.getPoliceId(),newofficer.getNic(),newofficer.getPoliceBadgeNumber(),newofficer.getRank(),newofficer.getPosition(),newofficer.getDepartment(),newofficer.getDateOfJoining(),newofficer.getStatus(),newofficer.getPhoto());
+            return new PoliceResponseDTO(newofficer.getNic(),newofficer.getPoliceBadgeNumber(),newofficer.getRank(),newofficer.getPosition(),newofficer.getDepartment(),newofficer.getDateOfJoining(),newofficer.getStatus(),newofficer.getPhoto());
         }
     }
 }

@@ -20,6 +20,9 @@ public class PoliceRegisterDTO {
     @NotBlank(message = "Email Cannot be blank!")
     private String email;
 
+    @NotNull(message = "Name is required")
+    @NotBlank(message = "Name Cannot be blanck!")
+    private String name;
 
     @NotNull(message = "password is required")
     @NotBlank(message = "password Cannot be blank!")
@@ -31,20 +34,34 @@ public class PoliceRegisterDTO {
     @Column(nullable = false)
     private String nic;
 
-    @NotNull(message = "Police Badge is required")
-    @NotBlank(message = "Police Badge Cannot be blank!")
+    @NotNull(message = "Police Badge Number is required")
+    @NotBlank(message = "Police Badge Number Cannot be blank!")
     @Column(nullable = false,unique = true)
     private String policeBadgeNumber;
 
-
+    @NotNull(message = "Rank is required")
+    @NotBlank(message = "Rank cannot be blank!")
     private String rank;
+
+    @NotNull(message = "position is required")
+    @NotBlank(message = "position cannot be blank!")
     private String position;
 
+    @NotNull(message = "department is required")
+    @NotBlank(message = "department cannot be blank")
     @Column(nullable = false)
     private String department;
-    private String dateOfJoining;
-    private String status;  //Active, On Leave, Retired
-    private String photo;
 
+    @NotNull(message = "date of joining required")
+    @NotBlank(message = "date of joining cannot be blank")
+    private String dateOfJoining;
+
+    @NotNull(message = "status is required")
+    @NotBlank(message = "status cannot be blank")
+    private String status;  //Active, On Leave, Retired
+
+    @NotNull(message = "Photo is required")
+    @NotBlank(message = "Photo cannot be blank!")
+    private String photo;
 
 }
