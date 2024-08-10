@@ -47,7 +47,6 @@ public class AdminService {
             policeOfficer.setNic(police.getNic());
             policeOfficer.setRank(police.getRank());
             policeOfficer.setPosition(police.getPosition());
-            policeOfficer.setDepartment(police.getDepartment());
             policeOfficer.setDateOfJoining(police.getDateOfJoining());
             policeOfficer.setStatus(police.getStatus());
             policeOfficer.setPhoto(police.getPhoto());

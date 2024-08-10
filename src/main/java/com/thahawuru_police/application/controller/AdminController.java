@@ -27,11 +27,8 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
-
-
-
         @PostMapping("/createpolice")
-    public ResponseEntity<ApiResponse<PoliceResponseDTO>> createPolice(@RequestBody PoliceRegisterDTO police) {
+        public ResponseEntity<ApiResponse<PoliceResponseDTO>> createPolice(@RequestBody PoliceRegisterDTO police) {
             System.out.println("POLICE CREATE CONTROLLEr");
             PoliceResponseDTO officer = adminService.createPolice(police);
             ApiResponse<PoliceResponseDTO> response = new ApiResponse<>(HttpStatus.CREATED.value(), officer, "success");
