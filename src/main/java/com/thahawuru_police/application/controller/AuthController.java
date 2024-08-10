@@ -4,6 +4,7 @@ package com.thahawuru_police.application.controller;
 
 import com.thahawuru_police.application.dto.response.ApiResponse;
 import com.thahawuru_police.application.dto.request.LoginRequestDTO;
+import com.thahawuru_police.application.dto.response.LoginPoliceResponseDTO;
 import com.thahawuru_police.application.dto.response.LoginResponseDTO;
 import com.thahawuru_police.application.dto.response.UserResponseDTO;
 import com.thahawuru_police.application.entity.User;
@@ -27,8 +28,8 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<LoginResponseDTO>> loginUser(@Valid @RequestBody LoginRequestDTO user){
-        ApiResponse<LoginResponseDTO> response  = new ApiResponse<>(HttpStatus.OK.value(),authService.login(user),"success");
+    public ResponseEntity<ApiResponse<LoginPoliceResponseDTO>> loginUser(@Valid @RequestBody LoginRequestDTO user){
+        ApiResponse<LoginPoliceResponseDTO> response  = new ApiResponse<>(HttpStatus.OK.value(),authService.login(user),"success");
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
