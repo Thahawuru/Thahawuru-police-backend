@@ -21,15 +21,6 @@ public class PoliceController {
     @Autowired
     private PoliceOfficerService policeService;
 
-//    @PostMapping("/createPolice")
-//    public ResponseEntity<ApiResponse<PoliceResponseDTO>> createPolice(@RequestBody Police police){
-//
-//        log.info("Received request to create police: {}", police);
-//
-//        ApiResponse<PoliceResponseDTO> response  = new ApiResponse<>(HttpStatus.CREATED.value(),policeService.createPolice(police),"created");
-//        return new ResponseEntity<>(response,HttpStatus.CREATED);
-//    }
-
     @GetMapping
     public ResponseEntity<ApiResponse<List<PoliceResponseDTO>>> getOfficers(){
         List<PoliceResponseDTO> officers =policeService.allOfficers();

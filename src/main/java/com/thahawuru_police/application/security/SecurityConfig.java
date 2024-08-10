@@ -32,8 +32,10 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/auth/login" ,"/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/admin/**" ).hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/**" ).hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**" ).permitAll()
                         .anyRequest().authenticated())
+                .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(withDefaults());
         http.addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
@@ -43,7 +45,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8081","http://localhost:8082","http://localhost:5000","http://localhost:3000","http://localhost:3001","http://localhost:3010"));
+        configuration.setAllowedOrigins(List.of("http://localhost:8081","http://localhost:8082","http://localhost:6000","http://localhost:3000","http://localhost:3001","http://localhost:3010"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
