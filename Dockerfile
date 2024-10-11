@@ -1,27 +1,20 @@
-# Use the official Maven image to build the project
+# Use OpenJDK version 22 as a base image (change to the actual JDK 22 image if available)
 FROM maven:3.9.9-eclipse-temurin-22-alpine
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the pom.xml file and the source code into the container
-COPY pom.xml .
-COPY src ./src
+# Install Maven for building and running in dev mode
 
-# Run Maven to build the project and create the JAR file
-RUN mvn clean package -DskipTests
+# Copy the pom.xml and download dependencies (caching dependencies)
+COPY pom.xml /app/
+RUN mvn dependency:go-offline
 
-# Use a minimal Java image to run the application
-FROM eclipse-temurin:21-jdk-alpine
+# Copy the application source code to the container (this will be overridden by volume in dev)
+COPY src /app/src
 
-# Set the working directory for the application
-WORKDIR /app
-
-# Copy the JAR file from the build image
-COPY --from=build /app/target/police-backend.jar ./app.jar
-
-# Expose the application's port
+# Expose the port Spring Boot will run on
 EXPOSE 8080
 
-# Define the command to run the application
-CMD ["java", "-jar", "app.jar"]
+# Default entry point for development (compile and run the project)
+# CMD ["mvn", "spring-boot:run"]
