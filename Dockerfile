@@ -1,14 +1,27 @@
-# Use an official OpenJDK image with Java 21
-FROM eclipse-temurin:21-jdk-alpine
+# Use the official Maven image to build the project
+FROM maven:3.9.2-eclipse-temurin-21 AS build
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the project JAR file to the container
-COPY target/police-backend.jar ./app.jar
+# Copy the pom.xml file and the source code into the container
+COPY pom.xml .
+COPY src ./src
+
+# Run Maven to build the project and create the JAR file
+RUN mvn clean package -DskipTests
+
+# Use a minimal Java image to run the application
+FROM eclipse-temurin:21-jdk-alpine
+
+# Set the working directory for the application
+WORKDIR /app
+
+# Copy the JAR file from the build image
+COPY --from=build /app/target/police-backend.jar ./app.jar
 
 # Expose the application's port
-EXPOSE 6000
+EXPOSE 8080
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Define the command to run the application
+CMD ["java", "-jar", "app.jar"]
