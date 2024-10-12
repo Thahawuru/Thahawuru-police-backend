@@ -35,6 +35,6 @@ public class AdminController {
             PoliceResponseDTO officer = adminService.createPolice(police);
             ApiResponse<PoliceResponseDTO> response = new ApiResponse<>(HttpStatus.CREATED.value(), officer, "success");
            return new ResponseEntity<>(response,HttpStatus.CREATED);
-        }
+    }
 
 }

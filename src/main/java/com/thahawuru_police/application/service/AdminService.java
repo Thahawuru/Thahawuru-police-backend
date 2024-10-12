@@ -34,26 +34,33 @@ public class AdminService {
         if(policeRepository.findByNic(police.getNic()).isPresent()){
             throw new IllegalStateException("Officer is  already exists!");
         }else{
-            User newuser = new User();
-            newuser.setRole(Roles.POLICEOFFICER);
-            newuser.setEmail(police.getEmail().toLowerCase());
-            newuser.setPassword(encryptionService.encryptPassword(police.getPassword()));
-            User saveduser = userRepository.save(newuser);
+            try{
+                User newuser = new User();
+                newuser.setRole(Roles.POLICEOFFICER);
+                newuser.setEmail(police.getEmail().toLowerCase());
+                newuser.setPassword(encryptionService.encryptPassword(police.getPassword()));
+                User saveduser = userRepository.save(newuser);
 
-            PoliceOfficer policeOfficer = new PoliceOfficer();
-            policeOfficer.setUser(saveduser);
-            policeOfficer.setDepartment(police.getDepartment());
-            policeOfficer.setPoliceBadgeNumber(police.getPoliceBadgeNumber());
-            policeOfficer.setNic(police.getNic());
-            policeOfficer.setRank(police.getRank());
-            policeOfficer.setPosition(police.getPosition());
-            policeOfficer.setDateOfJoining(police.getDateOfJoining());
-            policeOfficer.setStatus(police.getStatus());
-            policeOfficer.setPhoto(police.getPhoto());
 
-            PoliceOfficer newofficer=policeRepository.save(policeOfficer);
+                PoliceOfficer policeOfficer = new PoliceOfficer();
+                policeOfficer.setUser(saveduser);
+                policeOfficer.setDepartment(police.getDepartment());
+                policeOfficer.setPoliceBadgeNumber(police.getPoliceBadgeNumber());
+                policeOfficer.setNic(police.getNic());
+                policeOfficer.setRank(police.getRank());
+                policeOfficer.setPosition(police.getPosition());
+                policeOfficer.setDateOfJoining(police.getDateOfJoining());
+                policeOfficer.setStatus(police.getStatus());
+                policeOfficer.setPhoto(police.getPhoto());
+                policeOfficer.setEmail(police.getEmail());
+                policeOfficer.setPassword(encryptionService.encryptPassword(police.getPassword()));
 
-            return new PoliceResponseDTO(newofficer.getNic(),newofficer.getPoliceBadgeNumber(),newofficer.getRank(),newofficer.getPosition(),newofficer.getDepartment(),newofficer.getDateOfJoining(),newofficer.getStatus(),newofficer.getPhoto());
+                PoliceOfficer newofficer=policeRepository.save(policeOfficer);
+
+                return new PoliceResponseDTO(newofficer.getNic(),newofficer.getPoliceBadgeNumber(),newofficer.getRank(),newofficer.getPosition(),newofficer.getDepartment(),newofficer.getDateOfJoining(),newofficer.getStatus(),newofficer.getPhoto());
+            }catch (Exception e){
+                throw new RuntimeException("Failed to create police officer", e);
+            }
         }
     }
 }
