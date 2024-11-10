@@ -24,16 +24,16 @@ public class AdminService {
     @Autowired
     private EncryptionService encryptionService;
 
-@Transactional
+    @Transactional
     public PoliceResponseDTO createPolice(PoliceRegisterDTO police){
-
+        System.out.println(police);
         if(userRepository.findUserByEmail(police.getEmail().toLowerCase()).isPresent()){
-            throw new IllegalStateException("Officer is  already exists!");
-        }
-
-        if(policeRepository.findByNic(police.getNic()).isPresent()){
-            throw new IllegalStateException("Officer is  already exists!");
-        }else{
+            throw new IllegalStateException("Officer's email is  already exists!");
+        } else if (policeRepository.findByPoliceBadgeNumber(police.getPoliceBadgeNumber()).isPresent()) {
+            throw new IllegalStateException("Officer's badge number is  already exists!");
+        } else if(policeRepository.findByNic(police.getNic()).isPresent()){
+            throw new IllegalStateException("Officer NIC already exists!");
+        } else{
             User newuser = new User();
             newuser.setRole(Roles.POLICEOFFICER);
             newuser.setEmail(police.getEmail().toLowerCase());

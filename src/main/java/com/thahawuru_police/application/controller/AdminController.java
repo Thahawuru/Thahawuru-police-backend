@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -28,13 +32,17 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
-  
+
+
     @PostMapping("/createpolice")
     public ResponseEntity<ApiResponse<PoliceResponseDTO>> createPolice(@Valid @RequestBody PoliceRegisterDTO police) {
             System.out.println("Police officers create controller");
-            PoliceResponseDTO officer = adminService.createPolice(police);
-            ApiResponse<PoliceResponseDTO> response = new ApiResponse<>(HttpStatus.CREATED.value(), officer, "success");
-           return new ResponseEntity<>(response,HttpStatus.CREATED);
-        }
+            System.out.println(police);
+
+        PoliceResponseDTO officer = adminService.createPolice(police);
+        ApiResponse<PoliceResponseDTO> response = new ApiResponse<>(HttpStatus.CREATED.value(), officer, "success");
+        simpMessagingTemplate.convertAndSend("/topic/notifications", "New officer added: ");
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
+    }
 
 }
