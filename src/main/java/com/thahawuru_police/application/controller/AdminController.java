@@ -41,7 +41,7 @@ public class AdminController {
 
         PoliceResponseDTO officer = adminService.createPolice(police);
         ApiResponse<PoliceResponseDTO> response = new ApiResponse<>(HttpStatus.CREATED.value(), officer, "success");
-        simpMessagingTemplate.convertAndSend("/topic/notifications", "New officer added: ");
+        simpMessagingTemplate.convertAndSend("/topic/notifications", "success : New officer added: ");
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
