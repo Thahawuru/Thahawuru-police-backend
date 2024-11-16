@@ -1,6 +1,7 @@
 package com.thahawuru_police.application.service;
 
 import com.thahawuru_police.application.dto.response.PoliceResponseDTO;
+import com.thahawuru_police.application.entity.Status;
 import com.thahawuru_police.application.exception.UserNotFoundException;
 import com.thahawuru_police.application.entity.PoliceOfficer;
 import com.thahawuru_police.application.repository.PoliceOfficerRepository;
@@ -30,7 +31,7 @@ public class PoliceOfficerService {
             newOfficer.setPosition(police.getPosition());
             newOfficer.setDepartment(police.getDepartment());
             newOfficer.setDateOfJoining(police.getDateOfJoining());
-            newOfficer.setStatus(police.getStatus());
+            newOfficer.setStatus(Status.Active);
             newOfficer.setPhoto(police.getPhoto());
             PoliceOfficer newofficer=policeRepository.save(newOfficer);
 
@@ -39,9 +40,23 @@ public class PoliceOfficerService {
     }
 
     public List<PoliceResponseDTO> allOfficers(){
-        return policeRepository.findAll().stream()
-                .map(officer->new PoliceResponseDTO(officer.getPoliceId(), officer.getNic(),officer.getPoliceBadgeNumber(),officer.getRank(),officer.getPosition(),officer.getDepartment(),officer.getDateOfJoining(),officer.getStatus(),officer.getPhoto()))
-                .collect(Collectors.toList());
+        try{
+            return policeRepository.findByStatus(Status.Active).stream()
+                    .map(officer -> new PoliceResponseDTO(
+                            officer.getPoliceId(),
+                            officer.getNic(),
+                            officer.getPoliceBadgeNumber(),
+                            officer.getRank(),
+                            officer.getPosition(),
+                            officer.getDepartment(),
+                            officer.getDateOfJoining(),
+                            officer.getStatus(),
+                            officer.getPhoto()))
+                    .collect(Collectors.toList());
+
+        }catch (Exception e){
+            throw new UserNotFoundException(e.getMessage());
+        }
     }
 
     public PoliceResponseDTO getOfficer(UUID userid){
@@ -54,10 +69,10 @@ public class PoliceOfficerService {
         return new PoliceResponseDTO(officer.getPoliceId(),officer.getNic(),officer.getPoliceBadgeNumber(),officer.getRank(),officer.getPosition(),officer.getDepartment(),officer.getDateOfJoining(),officer.getStatus(),officer.getPhoto());
     }
 
-    //change user to inactive mode
+    //change user to deactive mode
     public PoliceResponseDTO deleteOfficer(UUID id) {
         PoliceOfficer officer = policeRepository.findById(id).orElseThrow(()-> new UserNotFoundException("officer Not Found!"));
-        officer.setStatus("in-Active");
+        officer.setStatus(Status.Deactive);
         PoliceOfficer officer2 = policeRepository.save(officer);
         return new PoliceResponseDTO(officer2.getPoliceId(),officer2.getNic(),officer2.getPoliceBadgeNumber(),officer2.getRank(),officer2.getPosition(),officer2.getDepartment(),officer2.getDateOfJoining(),officer2.getStatus(),officer2.getPhoto());
     }

@@ -1,6 +1,7 @@
 package com.thahawuru_police.application.dto.request;
 
 
+import com.thahawuru_police.application.entity.Status;
 import com.thahawuru_police.application.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
@@ -57,8 +58,7 @@ public class PoliceRegisterDTO {
     private String dateOfJoining;
 
     @NotNull(message = "status is required")
-    @NotBlank(message = "status cannot be blank")
-    private String status;  //Active, On Leave, Retired
+    private Status status;  //Active, On Leave, Retired
 
     @NotNull(message = "Photo is required")
     @NotBlank(message = "Photo cannot be blank!")
