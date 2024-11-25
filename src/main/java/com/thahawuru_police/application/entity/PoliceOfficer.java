@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.UUID;
+
 
 @Entity
 @Table(name = "police_officers")
@@ -25,7 +27,7 @@ public class PoliceOfficer {
 )
 @Id
 @Column(name = "police_id", updatable = false, nullable = false)
-    private String policeId;
+    private UUID policeId;
 
     @NotNull(message = "NIC is required")
     @NotBlank(message = "NIC Cannot be blank!")
@@ -44,8 +46,10 @@ public class PoliceOfficer {
     @Column(nullable = false)
     private String department;
     private String dateOfJoining;
-    private String status;  //Active, On Leave, Retired
     private String photo;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @OneToOne
     @JoinColumn(name = "user_id")
