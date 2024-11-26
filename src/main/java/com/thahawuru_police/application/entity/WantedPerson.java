@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
 
 
 @Entity
@@ -19,7 +20,7 @@ public class WantedPerson {
     @GeneratedValue(generator = "UUID")
     @Id
     @Column(nullable = false,updatable = false)
-    private String id;
+    private UUID id;
     private String name;
     private String dob;
     private String gender;
