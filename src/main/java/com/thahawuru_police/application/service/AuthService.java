@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -46,16 +47,13 @@ public class AuthService {
 
     }
 
-    public LoginPoliceResponseDTO login(LoginRequestDTO user) {
+    public LoginPoliceResponseDTO login(LoginRequestDTO user){
         User current = userRepository.findUserByEmail(user.getEmail().toLowerCase()).orElseThrow(() -> new UserNotFoundException("User Not Found!"));
-
         if (!current.getRole().equals(Roles.POLICEOFFICER)) {
             throw new IllegalStateException("THIS ROUTE IS NOT ALLOWED!");
         }
-        PoliceOfficer police = policeOfficerRepository.findByUser(current).orElseThrow(() -> new UserNotFoundException("Police officer Not Found!"));
-
-
-        if (encryptionService.verifyPassword(user.getPassword(), current.getPassword())) {
+        PoliceOfficer police = policeOfficerRepository.findByUserId(current.getId()).orElseThrow(()-> new UserNotFoundException("Police officer Not Found!"));
+        if (encryptionService.verifyPassword(user.getPassword(), current.getPassword())){
             String token = jwtService.generateJWT(current);
             return new LoginPoliceResponseDTO(new UserResponseDTO(current.getId(), current.getEmail(), current.getRole()),new PoliceResponseDTO(police.getPoliceId(), police.getNic(),police.getPoliceBadgeNumber(),police.getRank(),police.getPosition(),police.getDepartment(),police.getDateOfJoining(),police.getStatus(),police.getPhoto()), token);
         } else {

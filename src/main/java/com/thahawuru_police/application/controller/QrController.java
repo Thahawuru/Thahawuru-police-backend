@@ -2,6 +2,7 @@ package com.thahawuru_police.application.controller;
 
 import com.thahawuru_police.application.dto.response.ApiResponse;
 import com.thahawuru_police.application.dto.response.QrResponseDTO;
+import com.thahawuru_police.application.dto.response.WalletResponseDTO;
 import com.thahawuru_police.application.service.QrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,9 @@ public class QrController {
 //    }
 //}
 @GetMapping("/{nic}")
-    public ResponseEntity<ApiResponse<QrResponseDTO>> getQrDetails(@PathVariable String nic){
-        ApiResponse response = new ApiResponse<>(HttpStatus.OK.value(), qrService.getNicDetails(nic),"success");
+    public ResponseEntity<ApiResponse<WalletResponseDTO>> getQrDetails(@PathVariable String nic){
+        WalletResponseDTO qrResponse =qrService.getNicDetails(nic);
+        ApiResponse response = new ApiResponse<>(HttpStatus.OK.value(),qrResponse,"success");
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }

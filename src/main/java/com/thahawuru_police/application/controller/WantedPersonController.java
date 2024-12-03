@@ -45,7 +45,7 @@ public class WantedPersonController {
 
     @PutMapping("/edit/{userid}")
     public ResponseEntity<ApiResponse<WantedPersonResponseDTO>> updateWantedPerson(@RequestBody WantedPerson wantedPerson, @PathVariable(name = "userid") String id){
-        wantedPerson.setId(id);
+//        wantedPerson.setId(id);
         WantedPersonResponseDTO wantedperson = wantedPersonService.updateWantedPerson(wantedPerson);
         ApiResponse<WantedPersonResponseDTO> response = new ApiResponse<>(HttpStatus.OK.value(),wantedperson,"success");
         return new ResponseEntity<>(response,HttpStatus.OK);

@@ -6,7 +6,9 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
+import java.util.UUID;
 
 
 @Entity
@@ -17,9 +19,13 @@ import lombok.NoArgsConstructor;
 public class WantedPerson {
 
     @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Id
     @Column(nullable = false,updatable = false)
-    private String id;
+    private UUID id;
     private String name;
     private String dob;
     private String gender;

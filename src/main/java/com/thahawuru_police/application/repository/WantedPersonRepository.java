@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface WantedPersonRepository extends JpaRepository<WantedPerson , UUID> {
 
     Optional<WantedPerson> findWantedPersonByName(String name);
+    Optional<WantedPerson> findWantedPersonByNic(String nic);
 }
