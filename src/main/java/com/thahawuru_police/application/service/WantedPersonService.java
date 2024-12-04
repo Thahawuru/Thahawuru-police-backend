@@ -5,6 +5,7 @@ import com.thahawuru_police.application.exception.UserNotFoundException;
 import com.thahawuru_police.application.entity.WantedPerson;
 import com.thahawuru_police.application.repository.WantedPersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +17,14 @@ public class WantedPersonService {
 
     @Autowired
     private WantedPersonRepository wantedPersonRepository;
+
     @Autowired
-    private EncryptionService encryptionService;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     public WantedPersonResponseDTO createWantedPerson(WantedPerson wantedPerson) {
         if (wantedPersonRepository.findWantedPersonByName(wantedPerson.getName()).isPresent()){
+            String notificationMessage = String.format("failure: Wanted Person '%s' Already Exists in Database", wantedPerson.getName());
+            simpMessagingTemplate.convertAndSend("/topic/notifications", notificationMessage);
             throw new IllegalStateException("wantedPerson is  already exists!");
         }else{
             WantedPerson wantedPerson1 = new WantedPerson();
@@ -36,6 +40,8 @@ public class WantedPersonService {
             wantedPerson1.setOtherInfo(wantedPerson.getOtherInfo());
 
             WantedPerson wantedPerson2 = wantedPersonRepository.save(wantedPerson1);
+            String notificationMessage = String.format("success: Wanted Person '%s' Added successfully", wantedPerson.getName());
+            simpMessagingTemplate.convertAndSend("/topic/notifications", notificationMessage);
             return new WantedPersonResponseDTO(wantedPerson2.getId().toString() ,  wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo() , wantedPerson2.getStatus());
         }
     }
