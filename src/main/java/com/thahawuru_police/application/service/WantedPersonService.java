@@ -42,30 +42,34 @@ public class WantedPersonService {
             WantedPerson wantedPerson2 = wantedPersonRepository.save(wantedPerson1);
             String notificationMessage = String.format("success: Wanted Person '%s' Added successfully", wantedPerson.getName());
             simpMessagingTemplate.convertAndSend("/topic/notifications", notificationMessage);
-            return new WantedPersonResponseDTO(wantedPerson2.getId() ,  wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo() , wantedPerson2.getStatus());
+            return new WantedPersonResponseDTO(wantedPerson2.getId().toString() ,  wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo() , wantedPerson2.getStatus());
         }
     }
 
     public List<WantedPersonResponseDTO> allWantedPersons() {
         return wantedPersonRepository.findAll().stream()
-                .map(wantedPerson2->new WantedPersonResponseDTO(wantedPerson2.getId() ,wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo(), wantedPerson2.getStatus()))
+                .map(wantedPerson2->new WantedPersonResponseDTO(wantedPerson2.getId().toString() ,wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo(), wantedPerson2.getStatus()))
                 .collect(Collectors.toList());
     }
 
     public WantedPersonResponseDTO getWantedPerson(UUID userid) {
         WantedPerson wantedPerson2 =  wantedPersonRepository.findById(userid).orElseThrow(()-> new UserNotFoundException("officer Not Found!"));
-        return new WantedPersonResponseDTO(wantedPerson2.getId() , wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo(), wantedPerson2.getStatus());
+        return new WantedPersonResponseDTO(wantedPerson2.getId().toString() , wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo(), wantedPerson2.getStatus());
+    }
+    public WantedPersonResponseDTO getWantedPersonByNIC(String nic) {
+        WantedPerson wantedPerson2 =  wantedPersonRepository.findWantedPersonByNic(nic).orElseThrow(()-> new UserNotFoundException("officer Not Found!"));
+        return new WantedPersonResponseDTO(wantedPerson2.getId().toString() , wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo(), wantedPerson2.getStatus());
     }
 
     public WantedPersonResponseDTO updateWantedPerson(WantedPerson wantedPerson) {
         WantedPerson wantedPerson2 = wantedPersonRepository.save(wantedPerson);
-        return new WantedPersonResponseDTO(wantedPerson2.getId() ,wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo(), wantedPerson2.getStatus());
+        return new WantedPersonResponseDTO(wantedPerson2.getId().toString() ,wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo(), wantedPerson2.getStatus());
     }
 
     public WantedPersonResponseDTO deleteWantedPerson(UUID id) {
         WantedPerson wantedPerson = wantedPersonRepository.findById(id).orElseThrow(()->new UserNotFoundException("officer Not Found!"));
         wantedPerson.setStatus("found");
         WantedPerson wantedPerson2 = wantedPersonRepository.save(wantedPerson);
-        return new WantedPersonResponseDTO(wantedPerson2.getId() ,wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo(), wantedPerson2.getStatus());
+        return new WantedPersonResponseDTO(wantedPerson2.getId().toString() ,wantedPerson2.getName() , wantedPerson2.getDob() ,wantedPerson2.getGender() , wantedPerson2.getNic() , wantedPerson2.getPhoto() , wantedPerson2.getReasonForBeingWanted() , wantedPerson2.getColor() , wantedPerson2.getHeight() , wantedPerson2.getBodyType() , wantedPerson2.getOtherInfo(), wantedPerson2.getStatus());
     }
 }
