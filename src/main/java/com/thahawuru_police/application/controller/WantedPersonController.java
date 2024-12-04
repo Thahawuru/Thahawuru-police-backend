@@ -38,14 +38,16 @@ public class WantedPersonController {
 
     @GetMapping("/{userid}")
     public ResponseEntity<ApiResponse<WantedPersonResponseDTO>> getWantedPerson(@PathVariable UUID userid){
+        log.info("Received userid: {}", userid);
         WantedPersonResponseDTO wantedPerson  = wantedPersonService.getWantedPerson(userid);
         ApiResponse<WantedPersonResponseDTO> response = new ApiResponse<>(HttpStatus.OK.value(),wantedPerson,"success");
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @PutMapping("/edit/{userid}")
-    public ResponseEntity<ApiResponse<WantedPersonResponseDTO>> updateWantedPerson(@RequestBody WantedPerson wantedPerson, @PathVariable(name = "userid") String id){
+    public ResponseEntity<ApiResponse<WantedPersonResponseDTO>> updateWantedPerson(@RequestBody WantedPerson wantedPerson, @PathVariable(name = "userid") UUID id){
         wantedPerson.setId(id);
+        log.info("Received userid: {}", id);
         WantedPersonResponseDTO wantedperson = wantedPersonService.updateWantedPerson(wantedPerson);
         ApiResponse<WantedPersonResponseDTO> response = new ApiResponse<>(HttpStatus.OK.value(),wantedperson,"success");
         return new ResponseEntity<>(response,HttpStatus.OK);
