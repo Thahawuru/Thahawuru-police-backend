@@ -55,4 +55,10 @@ public class PoliceOfficer {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull(message = "Email cannot be empty")
+    private String email;
+
+    @NotNull(message = "Password cannot be empty")
+    private String password;
+
 }
